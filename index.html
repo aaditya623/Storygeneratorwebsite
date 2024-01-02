@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Story Generator</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #chatbot {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+            text-align: center; /* Center the content within #chatbot */
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #story {
+            margin-top: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        nav {
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: #4CAF50;
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbot">
+        <img src="https://img.freepik.com/premium-vector/teacher-read-story-book-while-student-sit-listening_97632-7316.jpg" alt="Story Image" style="width: 100%; max-width: 500px; object-fit: cover; margin-top: 20px;">
+        <h1>Chatbot Story Generator</h1>
+        <div id="story"></div>
+        <nav>
+            <a href="about.html">About Us</a>
+        </nav>
+    </div>
+
+    <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+    <script src="https://mediafiles.botpress.cloud/1c90e281-e7ff-4c1e-8269-6d0dc53fb4ec/webchat/config.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        const story = document.getElementById('story');
+
+        const API_KEY = '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';
+
+        async function generateStory() {
+            const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
+                prompt: 'Once upon a time in a land far, far away...',
+                max_tokens: 100,
+                n: 1,
+                stop: null,
+                temperature: 0.7,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${API_KEY}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const generatedStory = response.data.choices[0].text;
+            story.innerHTML = `<p>${generatedStory}</p>`;
+        }
+
+        generateStory();
+    </script>
+</body>
+</html>
+
